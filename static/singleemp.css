@@ -30,4 +30,21 @@ html, body{    height: 100%;    background-color:whitesmoke;    color:rgb(0, 75,
 
 }
 
+.child.child1 img
+{
+    width: 210px;
+    height: 100px;
+    margin-left: 30px;
+    padding-top: 10px;
+    padding-bottom: 33px;
 
+}
+
+.child.child7 p
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    margin: 0;
+}
