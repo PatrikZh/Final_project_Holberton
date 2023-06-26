@@ -11,6 +11,8 @@ def index():
 
 @app.route('/login', methods = ["POST", "GET"])
 def login():
+
+
     error = None
     if request.method == "POST":
         name = request.form['name']
@@ -20,7 +22,7 @@ def login():
         user = user_cursor.fetchone()
 
         if user:
-            if check_password_hash(user['password', password]):
+            if check_password_hash(user['password'], password):
                 return redirect(url_for('dashboard'))
             else:
                 error = "Password did not match"
@@ -29,12 +31,17 @@ def login():
 @app.route('/register', methods=["POST", "GET"])
 def register():
     if request.method == 'POST':
+        db = get_database()
         name = request.form['name']
         password = request.form['password']
         hashed_password = generate_password_hash(password)
 
-        db = get_database()
-        db.execute('insert into users ( name, password) values (?, ?)',[name, hashed_password])
+        dbuser_cur = db.execute('SELECT * FROM USERS WHERE NAME = ?', [name])
+        existing_username = dbuser_cur.fetchone()
+        if existing_username:
+            return render_template('register.html', registererror = 'Username already taken, try a different username.')
+
+        db.execute('INSERT INTO users (name, password) values (?, ?)',[name, hashed_password])
         db.commit()
         return redirect(url_for('index'))
     return render_template('register.html')
