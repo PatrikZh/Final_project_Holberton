@@ -9,9 +9,22 @@ app = Flask(__name__)
 def index():
     return render_template('home.html')
 
-@app.route('/login')
+@app.route('/login', methods = ["POST", "GET"])
 def login():
-    return render_template('login.html')
+    error = None
+    if request.method == "POST":
+        name = request.form['name']
+        password = request.form['password']
+        db = get_database()
+        user_cursor = db.execute('SELECT * FROM users WHERE name = ?', [name])
+        user = user_cursor.fetchone()
+
+        if user:
+            if check_password_hash(user['password', password]):
+                return redirect(url_for('dashboard'))
+            else:
+                error = "Password did not match"
+    return render_template('login.html', loginerror = error)
 
 @app.route('/register', methods=["POST", "GET"])
 def register():
