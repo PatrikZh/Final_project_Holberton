@@ -13,7 +13,7 @@ def get_current_user():
     if 'user' in session:
         user = session['user']
         db = get_database()
-        user_cur = db.execute('SELECT * FROM users WHERE name = ?', [user]')
+        user_cur = db.execute('SELECT * FROM users WHERE name = ?', [user])
         user = user_cursor.fetchone()
     return user
 
@@ -66,7 +66,7 @@ def dashboard():
     user = get_current_user()
     return render_template('dashboard.html', user = user)
 
-# Employee section route, keep or remove later
+
 @app.route('/addnewemployee')
 def addnewemployee():
     user = get_current_user()
@@ -82,8 +82,9 @@ def updateemployee():
     user = get_current_user()
     return render_template('updateemployee.html', user = user)
 
-# After loggin out it will return you to home
+@app.route('/logout')
 def logout():
+    session.pop('user', None)
     render_template('home.html')
 
 if __name__ == '__main__':
