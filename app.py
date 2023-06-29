@@ -14,7 +14,7 @@ def get_current_user():
         user = session['user']
         db = get_database()
         user_cur = db.execute('SELECT * FROM users WHERE name = ?', [user])
-        user = user_cursor.fetchone()
+        user = user_cur.fetchone()
     return user
 
 @app.route('/')
@@ -24,7 +24,7 @@ def index():
 @app.route('/login', methods = ["POST", "GET"])
 def login():
 
-
+    user = get_current_user()
     error = None
     if request.method == "POST":
         name = request.form['name']
@@ -88,4 +88,4 @@ def logout():
     render_template('home.html')
 
 if __name__ == '__main__':
-    app.run(debug = True, port=61317)
+    app.run(debug = True, port=61318)
