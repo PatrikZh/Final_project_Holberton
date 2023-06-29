@@ -31,10 +31,10 @@ def login():
 
     user = get_current_user()
     error = None
+    db = get_database()
     if request.method == "POST":
         name = request.form['name']
         password = request.form['password']
-        db = get_database()
         user_cursor = db.execute('SELECT * FROM users WHERE name = ?', [name])
         user = user_cursor.fetchone()
 
@@ -43,15 +43,17 @@ def login():
                 session['user'] = user['name']
                 return redirect(url_for('dashboard'))
             else:
-                error = "Password did not match"
+                error = "Username or Password did not match, Try again."
+        else:
+            error = "Username or Password did not match, Try again."
     return render_template('login.html', loginerror = error, user = user)
 
 @app.route('/register', methods=["POST", "GET"])
 def register():
     user = get_current_user()
+    db = get_database()
 
     if request.method == 'POST':
-        db = get_database()
         name = request.form['name']
         password = request.form['password']
         hashed_password = generate_password_hash(password)
