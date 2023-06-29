@@ -1,4 +1,4 @@
-from flask import Flask, url_for, request, redirect, session
+from flask import Flask, url_for, request, redirect, session, g
 from flask.templating import render_template
 from database import get_database
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -7,6 +7,11 @@ import os
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(24)
 
+
+@app.teardown_appcontext
+def close_database(eror):
+    if hasattr(g, 'crudapplication_db'):
+        g.crudapplication_db.close()
 
 def get_current_user():
     user = None
