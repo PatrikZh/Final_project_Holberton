@@ -68,15 +68,30 @@ def register():
         return redirect(url_for('index'))
     return render_template('register.html', user = user)
 
-@app.route('/dashboard')
+@app.route('/dashboard', methods=["POST", "GET"])
 def dashboard():
     user = get_current_user()
+    db = get_database()
+    if request.method == "GET":
+        emp_cur = db.execute('SELECT * FROM emp')
+        allemp = emp_cur.fetchall()
+        return redirect(url_for('dashboard', allemp = allemp))
     return render_template('dashboard.html', user = user)
 
 
-@app.route('/addnewemployee')
+@app.route('/addnewemployee', methods=["POST", "GET"])
 def addnewemployee():
     user = get_current_user()
+    if request.method == "POST":
+        name = request.form['name']
+        email = request.form['email']
+        phone = request.form['phone']
+        address = request.form['address']
+        db = get_database()
+        db.execute('INSERT INTO emp (name, email, phone, address) values (?,?,?,?)', [name,email,phone,address])
+        db.commit()
+        return redirect(url_for('dashboard'))
+
     return render_template('addnewemployee.html', user = user)
 
 @app.route('/singleemployee')
