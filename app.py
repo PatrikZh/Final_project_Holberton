@@ -68,15 +68,13 @@ def register():
         return redirect(url_for('index'))
     return render_template('register.html', user = user)
 
-@app.route('/dashboard', methods=["POST", "GET"])
+@app.route('/dashboard')
 def dashboard():
     user = get_current_user()
     db = get_database()
-    if request.method == "GET":
-        emp_cur = db.execute('SELECT * FROM emp')
-        allemp = emp_cur.fetchall()
-        return redirect(url_for('dashboard', allemp = allemp))
-    return render_template('dashboard.html', user = user)
+    emp_cur = db.execute('SELECT * FROM emp')
+    allemp = emp_cur.fetchall()
+    return render_template('dashboard.html', user = user, allemp=allemp)
 
 
 @app.route('/addnewemployee', methods=["POST", "GET"])
