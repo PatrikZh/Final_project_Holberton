@@ -92,10 +92,13 @@ def addnewemployee():
 
     return render_template('addnewemployee.html', user = user)
 
-@app.route('/singleemployee')
-def singleemployee():
+@app.route('/singleemployee/<int:empid>')
+def singleemployee(empid):
     user = get_current_user()
-    return render_template('singleemployee.html', user = user)
+    db = get_database()
+    emp_cur = db.execute('SELECT * FROM emp WHERE empid = ?', [empid])
+    single_employee = emp_cur.fetchone()
+    return render_template('singleemployee.html', user = user, single_employee = single_employee)
 
 @app.route('/updateemployee')
 def updateemployee():
