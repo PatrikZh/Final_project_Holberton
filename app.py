@@ -103,6 +103,14 @@ def updateemployee():
     user = get_current_user()
     return render_template('updateemployee.html', user = user)
 
+@app.route('/deletemp/<int:empid>')
+def deletemp(empid):
+    user = get_current_user()
+    db = get_database()
+    db.execute('DELETE FROM emp WHERE empid = ?', [empid])
+    db.commit()
+    return render_template('dasboard.html', user = user)
+
 @app.route('/logout')
 def logout():
     session.pop('user', None)

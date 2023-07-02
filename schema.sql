@@ -1,6 +1,19 @@
-create table users( id integer AUTO_INCREMENT PRIMARY key, name text not null, password text not null, 
-admin boolean not null DEFAULT '0');
+CREATE TABLE users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    password TEXT NOT NULL,
+    admin BOOLEAN NOT NULL DEFAULT 0
+);
 
-create table emp ( empid integer AUTO_INCREMENT PRIMARY KEY , name text not null, email text, phone integer,
-address text, joining_date timestamp DEFAULt CURRENT_TIMESTAMP, total_projects integer default 1, total_test_case
-integer DEFAULT 1, total_defects_found integer DEFAUlT 1, total_defects_pending integer DEFAULT 1);
+CREATE TABLE emp (
+    empid INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    email TEXT,
+    phone INTEGER,
+    address TEXT,
+    joining_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    total_projects INTEGER DEFAULT 1,
+    total_test_case INTEGER DEFAULT 1,
+    total_defects_found INTEGER DEFAULT 1,
+    total_defects_pending INTEGER DEFAULT 1
+);
