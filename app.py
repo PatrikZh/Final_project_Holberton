@@ -74,8 +74,6 @@ def dashboard():
     allemp = emp_cur.fetchall()
     return render_template('dashboard.html', user=user, allemp=allemp)
 
-
-
 @app.route('/addnewemployee', methods=["POST", "GET"])
 def addnewemployee():
     user = get_current_user()
@@ -98,17 +96,27 @@ def singleemployee(empid):
     single_emp = emp_cur.fetchone()
     return render_template('singleemployee.html', user=user, single_emp=single_emp)
 
+@app.route('/fetchone/<int:empid>')
+def fetchone(empid):
+    user = get_current_user()
+    db = get_database()
+    emp_cur = db.execute('SELECT * FROM emp WHERE empid = ?', [empid])
+    single_emp = emp_cur.fetchone()
+    return render_template('updateemployee.html', user=user, single_emp=single_emp)
+
 @app.route('/updateemployee')
 def updateemployee():
     user = get_current_user()
     return render_template('updateemployee.html', user = user)
 
-@app.route('/deletemp/<int:empid>')
+@app.route('/deletemp/<int:empid>', methods = ["GET", "POST"])
 def deletemp(empid):
     user = get_current_user()
-    db = get_database()
-    db.execute('DELETE FROM emp WHERE empid = ?', [empid])
-    db.commit()
+    if request.method == "GET":
+        db = get_database()
+        db.execute('DELETE FROM emp WHERE empid = ?', [empid])
+        db.commit()
+        return redirect(url_for('dashboard'))
     return render_template('dasboard.html', user = user)
 
 @app.route('/logout')

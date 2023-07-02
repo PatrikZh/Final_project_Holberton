@@ -52,22 +52,27 @@
               <div class="table-responsive-lg caption-top">
                 <caption><h3>UPDATE EMPLOYEES</h3></caption>
                  <hr>
+                 {% if single_emp %}
                 <form class="p-3">
                     <div class="mb-2">
+                    <label for="empid" class="form-label">EMP ID</label>
+                    <input type="text" class="form-control" id="empid" value = "{{single_emp['empid']}}" name="empid">
+                    </div>
+                    <div class="mb-2">
                       <label for="name" class="form-label">Name</label>
-                      <input type="text" class="form-control" id="name">
+                      <input type="text" class="form-control" id="name" value = "{{single_emp['name']}}" name="name">
                     </div>
                     <div class="mb-2">
                       <label for="email" class="form-label">Email</label>
-                      <input type="email" class="form-control" id="email">
+                      <input type="email" class="form-control" id="email" value = "{{single_emp['email']}}" name="email">
                     </div>
                     <div class="mb-2">
                         <label for="name" class="form-label">Phone</label>
-                        <input type="text" class="form-control" id="phone">
+                        <input type="text" class="form-control" id="phone" value = "{{single_emp['phone']}}" name="phone">
                       </div>
                       <div class="mb-2">
                         <label for="email" class="form-label">Address</label>
-                        <input type="email" class="form-control" id="phone">
+                        <input type="email" class="form-control" id="phone" value = "{{single_emp['address']}}" name="address">
                       </div>
             <button type="submit" class="btn text-light m-3" style="background-color:rgb(0, 75, 93);">Update Employee</button>
                   </form>
