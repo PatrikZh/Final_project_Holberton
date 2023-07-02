@@ -10,4 +10,3 @@ def get_database():
     if not hasattr(g, 'crudapplication_db'):
         g.crudapplication_db = connect_to_database()
     return g.crudapplication_db
-    

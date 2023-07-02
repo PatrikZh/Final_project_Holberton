@@ -28,7 +28,6 @@ def index():
 
 @app.route('/login', methods = ["POST", "GET"])
 def login():
-
     user = get_current_user()
     error = None
     db = get_database()
@@ -37,7 +36,6 @@ def login():
         password = request.form['password']
         user_cursor = db.execute('SELECT * FROM users WHERE name = ?', [name])
         user = user_cursor.fetchone()
-
         if user:
             if check_password_hash(user['password'], password):
                 session['user'] = user['name']
@@ -46,7 +44,7 @@ def login():
                 error = "Username or Password did not match, Try again."
         else:
             error = "Username or Password did not match, Try again."
-    return render_template('login.html', loginerror = error, user = user)
+    return render_template('login.html', loginerror = error, user=user)
 
 @app.route('/register', methods=["POST", "GET"])
 def register():
@@ -72,9 +70,10 @@ def register():
 def dashboard():
     user = get_current_user()
     db = get_database()
-    emp_cur = db.execute('SELECT * FROM emp')
+    emp_cur = db.execute('SELECT empid, name, email, phone, address FROM emp')
     allemp = emp_cur.fetchall()
-    return render_template('dashboard.html', user = user, allemp=allemp)
+    return render_template('dashboard.html', user=user, allemp=allemp)
+
 
 
 @app.route('/addnewemployee', methods=["POST", "GET"])
@@ -89,7 +88,6 @@ def addnewemployee():
         db.execute('INSERT INTO emp (name, email, phone, address) values (?,?,?,?)', [name,email,phone,address])
         db.commit()
         return redirect(url_for('dashboard'))
-
     return render_template('addnewemployee.html', user = user)
 
 @app.route('/singleemployee/<int:empid>')
@@ -97,8 +95,8 @@ def singleemployee(empid):
     user = get_current_user()
     db = get_database()
     emp_cur = db.execute('SELECT * FROM emp WHERE empid = ?', [empid])
-    single_employee = emp_cur.fetchone()
-    return render_template('singleemployee.html', user = user, single_employee = single_employee)
+    single_emp = emp_cur.fetchone()
+    return render_template('singleemployee.html', user=user, single_emp=single_emp)
 
 @app.route('/updateemployee')
 def updateemployee():
@@ -108,7 +106,7 @@ def updateemployee():
 @app.route('/logout')
 def logout():
     session.pop('user', None)
-    render_template('home.html')
+    return render_template('home.html')
 
 if __name__ == '__main__':
     app.run(debug = True, port=61318)
