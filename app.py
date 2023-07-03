@@ -104,9 +104,19 @@ def fetchone(empid):
     single_emp = emp_cur.fetchone()
     return render_template('updateemployee.html', user=user, single_emp=single_emp)
 
-@app.route('/updateemployee')
+@app.route('/updateemployee', methods = ["POST", "GET"])
 def updateemployee():
     user = get_current_user()
+    if request.method == "POST":
+        empid = request.form['empid']
+        name = request.form['name']
+        email = request.form['email']
+        phone = request.form['phone']
+        address = request.form['address']
+        db = get_database()
+        db.execute('UPDATE emp SET name = ?, email = ?, phone = ?, address = ? WHERE empid = ?', [name, email, phone, address, empid])
+        db.commit()
+        return redirect(url_for('dashboard'))
     return render_template('updateemployee.html', user = user)
 
 @app.route('/deletemp/<int:empid>', methods = ["GET", "POST"])
